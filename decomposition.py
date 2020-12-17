@@ -61,21 +61,21 @@ def process(a, print_intermediate):
 
 def decompose(n, print_intermediate):
     b = f"{n:b}"
-    red(f"Input number {n}\tBinary representation {b}")
+    red(f"Input number {n}     Binary representation {b}")
     a = b[::-1]
-    red(f"Regular binary {b}\tInverse binary {a}")
+    red(f"Regular binary {b}     Inverse binary {a}")
     count = 0
-    red(text=a.replace("0", " "), end="\t")
+    red(text=a.replace("0", " "), end=" " * 5)
     hc = hcount(a=a)
-    magenta(text=f"\t\t\t{hc}", end="\t")
-    cyan(text=f"\t\t\t{lcount(a=a)}", end="\t")
+    magenta(text=f"     {hc}", end=" " * 5)
+    cyan(text=f"     {lcount(a=a)}", end=" " * 5)
     print()
     while hc != 1:
         a = process(a, print_intermediate)
         hc = hcount(a)
-        red(text=a.replace("0", " "), end="\t")
-        magenta(text=f"\t\t\t{hc}", end="\t")
-        cyan(text=f"\t\t\t{lcount(a=a)}", end="\t")
+        red(text=a.replace("0", " "), end=" " * 5)
+        magenta(text=f"     {hc}", end=" " * 5)
+        cyan(text=f"     {lcount(a=a)}", end=" " * 5)
         print()
         count += 1
     print(f"Count:\t{count} for\t{n}")
