@@ -59,7 +59,7 @@ def process(a, print_intermediate):
     return "".join(s[1:])
 
 
-def decompose(n, print_intermediate):
+def decompose(n, print_intermediate, stop_cross):
     b = f"{n:b}"
     red(f"Input number {n}     Binary representation {b}")
     a = b[::-1]
@@ -72,7 +72,7 @@ def decompose(n, print_intermediate):
     lc0 = lc
     cyan(text=f"     {lc}", end=" " * 5)
     print()
-    while hc != 1 and lc >= lc0:
+    while hc != 1 and (lc >= lc0 or not stop_cross):
         a = process(a, print_intermediate)
         hc = hcount(a)
         lc = lcount(a=a)
@@ -87,11 +87,18 @@ def decompose(n, print_intermediate):
 if __name__ == '__main__':
     n_value = 1000000
     print_intermediate_value = False
-    if len(sys.argv) == 2:
+    stop_cross_value = False
+    if len(sys.argv) >= 2:
         n_value = int(sys.argv[-1])
-    elif len(sys.argv) == 3:
-        n_value = int(sys.argv[-1])
+    if len(sys.argv) >= 3:
         if sys.argv[-2] == "1":
             print_intermediate_value = True
+    if len(sys.argv) >= 4:
+        if sys.argv[-3] == "1":
+            stop_cross_value = True
 
-    decompose(n=n_value, print_intermediate=print_intermediate_value)
+    decompose(
+        n=n_value,
+        print_intermediate=print_intermediate_value,
+        stop_cross=stop_cross_value
+    )
