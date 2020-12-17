@@ -65,5 +65,5 @@ if __name__ == '__main__':
     if len(sys.argv) == 1:
         n_value = 1000000
     else:
-        n_value = sys.argv[1]
+        n_value = int(sys.argv[1])
     decompose(n=n_value)
