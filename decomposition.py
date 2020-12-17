@@ -85,7 +85,7 @@ def decompose(n, print_intermediate, stop_cross):
 
 
 if __name__ == '__main__':
-    n_value = 1000000
+    n_value = 837799
     print_intermediate_value = False
     stop_cross_value = False
     if len(sys.argv) >= 2:
