@@ -1,5 +1,9 @@
 import sys
+from colorama import init
 from termcolor import colored
+
+# use Colorama to make Termcolor work on Windows too
+init()
 
 
 def red(text, **kwargs):
@@ -52,7 +56,7 @@ def process(a, print_intermediate):
     first_one = next((i for i in range(len(s)) if s[i] == "1"))
     add(index=first_one)
 
-    return "".join(s)
+    return "".join(s[1:])
 
 
 def decompose(n, print_intermediate):
