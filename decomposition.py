@@ -68,14 +68,17 @@ def decompose(n, print_intermediate):
     red(text=a.replace("0", " "), end=" " * 5)
     hc = hcount(a=a)
     magenta(text=f"     {hc}", end=" " * 5)
-    cyan(text=f"     {lcount(a=a)}", end=" " * 5)
+    lc = lcount(a=a)
+    lc0 = lc
+    cyan(text=f"     {lc}", end=" " * 5)
     print()
-    while hc != 1:
+    while hc != 1 and lc >= lc0:
         a = process(a, print_intermediate)
         hc = hcount(a)
+        lc = lcount(a=a)
         red(text=a.replace("0", " "), end=" " * 5)
         magenta(text=f"     {hc}", end=" " * 5)
-        cyan(text=f"     {lcount(a=a)}", end=" " * 5)
+        cyan(text=f"     {lc}", end=" " * 5)
         print()
         count += 1
     print(f"Count:\t{count} for\t{n}")
