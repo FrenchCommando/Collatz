@@ -1,4 +1,4 @@
-import sys
+import argparse
 from colorama import init
 from termcolor import colored
 
@@ -100,14 +100,24 @@ if __name__ == '__main__':
     n_value = 837799
     print_intermediate_value = False
     stop_cross_value = False
-    if len(sys.argv) >= 2:
-        n_value = int(sys.argv[-1])
-    if len(sys.argv) >= 3:
-        if sys.argv[-2] == "1":
-            print_intermediate_value = True
-    if len(sys.argv) >= 4:
-        if sys.argv[-3] == "1":
-            stop_cross_value = True
+    binary_input = False
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-b', help='binary input', action="store_true")
+    parser.add_argument('-c', help='show only high flight', action="store_true")
+    parser.add_argument('-i', help='print intermediate values',action="store_true")
+    parser.add_argument('number', help='starting number')
+    args = parser.parse_args()
+
+    if args.b:
+        n_value = int(args.number, 2)
+    else:
+        n_value = int(args.number)
+
+    if args.c:
+        stop_cross_value = True
+    if args.i:
+        print_intermediate_value = True
 
     decompose(
         n=n_value,
