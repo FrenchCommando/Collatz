@@ -22,6 +22,10 @@ def cyan(text, **kwargs):
     print(colored(text=text, color="cyan"), **kwargs)
 
 
+def yellow(text, **kwargs):
+    print(colored(text=text, color="yellow"), **kwargs)
+
+
 def hcount(a):
     count = a.count("1")
     return count
@@ -59,7 +63,7 @@ def process(a, print_intermediate):
     return "".join(s[1:])
 
 
-def decompose(n, print_intermediate, stop_cross):
+def decompose(n, print_intermediate, print_forward,  stop_cross):
     b = f"{n:b}"
     red(f"Input number {n}     Binary representation {b}")
     a = b[::-1]
@@ -78,10 +82,11 @@ def decompose(n, print_intermediate, stop_cross):
         a = process(a, print_intermediate)
         hc = hcount(a)
         lc = lcount(a=a)
-        red(text=a.replace("0", " "), end=" " * 5)
-        magenta(text=f"     {hc}", end=" " * 5)
-        cyan(text=f"     {lc}", end=" " * 5)
-        print()
+        if print_forward:
+            red(text=a.replace("0", " "), end=" " * 5)
+            magenta(text=f"     {hc}", end=" " * 5)
+            cyan(text=f"     {lc}", end=" " * 5)
+            print()
         count += 1
         history.append(a)
     print(f"Count:\t{count} for\t{n}")
@@ -95,17 +100,29 @@ def decompose(n, print_intermediate, stop_cross):
         cyan(text=f"     {lc}", end=" " * 5)
         print()
 
+    for i, a in enumerate(history[::-1]):
+        a_space = a.replace("0", " ")
+        space_pad = " " * i * 0
+        yellow(text=f"{space_pad}{a_space}", end=" " * 5)
+        hc = hcount(a)
+        lc = lcount(a=a)
+        magenta(text=f"     {hc}", end=" " * 5)
+        cyan(text=f"     {lc}", end=" " * 5)
+        print()
+
 
 if __name__ == '__main__':
     n_value = 837799
     print_intermediate_value = False
     stop_cross_value = False
     binary_input = False
+    print_forward_value = False
 
     parser = argparse.ArgumentParser()
     parser.add_argument('-b', help='binary input', action="store_true")
     parser.add_argument('-c', help='show only high flight', action="store_true")
-    parser.add_argument('-i', help='print intermediate values',action="store_true")
+    parser.add_argument('-i', help='print intermediate values', action="store_true")
+    parser.add_argument('-f', help='print forward values', action="store_true")
     parser.add_argument('number', help='starting number')
     args = parser.parse_args()
 
@@ -116,11 +133,14 @@ if __name__ == '__main__':
 
     if args.c:
         stop_cross_value = True
-    if args.i:
-        print_intermediate_value = True
+    if args.f:
+        print_forward_value = True
+        if args.i:
+            print_intermediate_value = True
 
     decompose(
         n=n_value,
         print_intermediate=print_intermediate_value,
-        stop_cross=stop_cross_value
+        print_forward=print_forward_value,
+        stop_cross=stop_cross_value,
     )
