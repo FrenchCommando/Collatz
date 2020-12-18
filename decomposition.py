@@ -64,6 +64,7 @@ def decompose(n, print_intermediate, stop_cross):
     red(f"Input number {n}     Binary representation {b}")
     a = b[::-1]
     red(f"Regular binary {b}     Inverse binary {a}")
+    print()
     count = 0
     red(text=a.replace("0", " "), end=" " * 5)
     hc = hcount(a=a)
@@ -72,6 +73,7 @@ def decompose(n, print_intermediate, stop_cross):
     lc0 = lc
     cyan(text=f"     {lc}", end=" " * 5)
     print()
+    history = [a]
     while hc != 1 and (lc >= lc0 or not stop_cross):
         a = process(a, print_intermediate)
         hc = hcount(a)
@@ -81,7 +83,17 @@ def decompose(n, print_intermediate, stop_cross):
         cyan(text=f"     {lc}", end=" " * 5)
         print()
         count += 1
+        history.append(a)
     print(f"Count:\t{count} for\t{n}")
+    for i, a in enumerate(history[::-1]):
+        a_space = a.replace("0", " ")
+        space_pad = " " * i
+        green(text=f"{space_pad}{a_space}", end=" " * 5)
+        hc = hcount(a)
+        lc = lcount(a=a)
+        magenta(text=f"     {hc}", end=" " * 5)
+        cyan(text=f"     {lc}", end=" " * 5)
+        print()
 
 
 if __name__ == '__main__':
