@@ -14,55 +14,37 @@ def lcount(a):
 def process(a, print_intermediate, base4):
     while a[-2] != "0" or a[-1] != "0":
         a += "0"
-    s = list(a)
+    s = list([int(c) for c in a])
+
+    last_digit = 3 if base4 else 1
 
     def add(index):
-        if s[index] == "0":
-            s[index] = "1"
+        if (d := s[index]) != last_digit:
+            s[index] = d + 1
         else:
-            s[index] = "0"
+            s[index] = 0
             add(index=index+1)
 
     def multiply(index):
-        if s[index] == "1":
-            add(index=index+1)
-
-    if base4:
-        def add(index):
-            if s[index] != "3":
-                s[index] = str(int(s[index]) + 1)
-            else:
-                s[index] = "0"
-                add(index=index + 1)
-
-        def multiply(index):
-            if s[index] == "0":
-                return
-            elif s[index] == "1":
-                s[index] = "3"
-            elif s[index] == "2":
-                add(index=index + 1)
-            elif s[index] == "3":
-                s[index] = "1"
-                add(index=index + 1)
-                add(index=index + 1)
+        for _ in range(int(s[index]) * 2):  # multiply 3 means add 2
+            add(index=index)
 
     # That's the x3 multiplication
     for i in range(len(s) - 1, -1, -1):
         multiply(index=i)
 
     if print_intermediate:
-        green(text="".join(s).replace("0", " "))
+        green(text="".join(map(str, s)).replace("0", " "))
 
     # that's the +1
-    first_one = next((i for i in range(len(s)) if s[i] != "0"))
-    if s[first_one] == "2" and base4:  # missing 2 simplification means I add 2 instead of 1
+    first_one = next((i for i in range(len(s)) if s[i] != 0))
+    if s[first_one] == 2 and base4:  # missing 2 simplification means I add 2 instead of 1
         add(index=first_one)
     add(index=first_one)
 
     if base4:
-        return "".join(s)
-    return "".join(s[1:])
+        return "".join(map(str, s))
+    return "".join(map(str, s[1:]))
 
 
 def decompose(n, print_intermediate, print_forward,  stop_cross, base4=False):
