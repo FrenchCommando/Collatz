@@ -2,17 +2,16 @@ from src import red, green, yellow, magenta, cyan
 
 
 def hcount(a):
-    count = a.count("1")
-    return count
+    return len(a) - a.count("0")  # base not 2 ?
 
 
 def lcount(a):
-    first_one = next((i for i, c in enumerate(a) if a[i] == "1"))
-    last_one = next((i for i, c in enumerate(a[::-1]) if a[-i] == "1"))
+    first_one = next((i for i, c in enumerate(a) if a[i] != "0"))
+    last_one = next((i for i, c in enumerate(a[::-1]) if a[-i] != "0"))
     return len(a) - first_one - last_one + 1
 
 
-def process(a, print_intermediate):
+def process(a, print_intermediate, base4):
     while a[-2] != "0" or a[-1] != "0":
         a += "0"
     s = list(a)
@@ -24,25 +23,61 @@ def process(a, print_intermediate):
             s[index] = "0"
             add(index=index+1)
 
+    def multiply(index):
+        if s[index] == "1":
+            add(index=index+1)
+
+    if base4:
+        def add(index):
+            if s[index] != "3":
+                s[index] = str(int(s[index]) + 1)
+            else:
+                s[index] = "0"
+                add(index=index + 1)
+
+        def multiply(index):
+            if s[index] == "0":
+                return
+            elif s[index] == "1":
+                s[index] = "3"
+            elif s[index] == "2":
+                add(index=index + 1)
+            elif s[index] == "3":
+                s[index] = "1"
+                add(index=index + 1)
+                add(index=index + 1)
+
     # That's the x3 multiplication
     for i in range(len(s) - 1, -1, -1):
-        if s[i] == "1":
-            add(index=i+1)
+        multiply(index=i)
+
     if print_intermediate:
         green(text="".join(s).replace("0", " "))
 
     # that's the +1
-    first_one = next((i for i in range(len(s)) if s[i] == "1"))
+    first_one = next((i for i in range(len(s)) if s[i] != "0"))
+    if s[first_one] == "2" and base4:  # missing 2 simplification means I add 2 instead of 1
+        add(index=first_one)
     add(index=first_one)
 
+    if base4:
+        return "".join(s)
     return "".join(s[1:])
 
 
-def decompose(n, print_intermediate, print_forward,  stop_cross):
+def decompose(n, print_intermediate, print_forward,  stop_cross, base4=False):
     b = f"{n:b}"
     red(f"Input number {n}     Binary representation {b}")
     a = b[::-1]
     red(f"Regular binary {b}     Inverse binary {a}")
+    if base4:
+        def base2tobase4(s):
+            if len(s) < 2:
+                return s
+            return str(int(s[0]) + 2 * int(s[1]))
+        a = "".join([base2tobase4(s=a[i:i+2])for i in range(0, len(a), 2)])
+        b = a[::-1]
+        green(f"Base4 {b}     Inverse {a}")
     print()
     count = 0
     red(text=a.replace("0", " "), end=" " * 5)
@@ -54,7 +89,7 @@ def decompose(n, print_intermediate, print_forward,  stop_cross):
     print()
     history = [a]
     while hc != 1 and (lc >= lc0 or not stop_cross):
-        a = process(a, print_intermediate)
+        a = process(a, print_intermediate, base4)
         hc = hcount(a)
         lc = lcount(a=a)
         if print_forward:

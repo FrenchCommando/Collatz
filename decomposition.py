@@ -7,12 +7,14 @@ print_intermediate_value = False
 stop_cross_value = False
 binary_input = False
 print_forward_value = False
+base4_value = False
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-b', help='binary input', action="store_true")
 parser.add_argument('-c', help='show only high flight', action="store_true")
 parser.add_argument('-i', help='print intermediate values', action="store_true")
 parser.add_argument('-f', help='print forward values', action="store_true")
+parser.add_argument('-a', help='use base 4', action="store_true")
 parser.add_argument('number', help='starting number', default=n_value, nargs='?')
 args = parser.parse_args()
 
@@ -24,6 +26,8 @@ else:
 
 if args.c:
     stop_cross_value = True
+if args.a:
+    base4_value = True
 if args.f:
     print_forward_value = True
     if args.i:
@@ -34,4 +38,5 @@ decompose(
     print_intermediate=print_intermediate_value,
     print_forward=print_forward_value,
     stop_cross=stop_cross_value,
+    base4=base4_value,
 )
