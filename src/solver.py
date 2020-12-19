@@ -38,9 +38,13 @@ def process(a, print_intermediate, base4):
 
     # that's the +1
     first_one = next((i for i in range(len(s)) if s[i] != 0))
+
+    def post_operation(index):
+        # s[index] -= 1
+        add(index=index)
     if s[first_one] == 2 and base4:  # missing 2 simplification means I add 2 instead of 1
-        add(index=first_one)
-    add(index=first_one)
+        post_operation(index=first_one)
+    post_operation(index=first_one)
 
     if base4:
         return "".join(map(str, s))
