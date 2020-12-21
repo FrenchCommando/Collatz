@@ -1,2 +1,2 @@
 CALL venv\Scripts\activate
-CALL python -m decomposition -bic 1111111
+CALL cls & python -m decomposition -bic 1111111
