@@ -1,4 +1,5 @@
 from src import red, green, yellow, magenta, cyan
+from sympy.ntheory import factorint
 
 
 def hcount(a):
@@ -9,6 +10,18 @@ def lcount(a):
     first_one = next((i for i, c in enumerate(a) if a[i] != "0"))
     last_one = next((i for i, c in enumerate(a[::-1]) if a[-i] != "0"))
     return len(a) - first_one - last_one + 1
+
+
+def prime_factors(a):
+    n = int(a[::-1], 2)
+    factors = factorint(n=n)
+    l = []
+    for k, v in factors.items():
+        if k != 2:
+            for i in range(v):
+                l.append(str(k))
+    if l:
+        return "   ".join(l)
 
 
 def process(a, print_intermediate, base4):
@@ -102,6 +115,8 @@ def decompose(n, print_intermediate, print_forward,  stop_cross, base4=False):
         yellow(text=f"{space_pad}{a_space}", end=" " * 5)
         hc = hcount(a)
         lc = lcount(a=a)
+        pr = prime_factors(a=a)
         magenta(text=f"     {hc}", end=" " * 5)
         cyan(text=f"     {lc}", end=" " * 5)
+        red(text=f"     {pr}", end=" " * 5)
         print()
