@@ -12,6 +12,15 @@ from sympy.core import Rational
 #  manipulating increments of a_i make shifting become cyclic permutation
 # denominator: 2^n - 3^k
 
+def build_numerator(s):
+    a = [i for i, c in enumerate(s) if c == "1"]
+    # magenta(f"alpha\t{a}")
+    numerator = sum(3 ** d * 2 ** alpha for d, alpha in enumerate(a[::-1]))
+    numerator_factors = factorint(n=numerator)
+    magenta(text=s, end="     ")
+    yellow(text=f"Numerator\t{numerator}\t{numerator_factors}")
+    return numerator
+
 
 def check(s):
     red(s)
@@ -20,18 +29,13 @@ def check(s):
     red(f"n\t{n}")
     red(f"k\t{k}")
 
-    a = [i for i, c in enumerate(s) if c == "1"]
-    magenta(f"alpha\t{a}")
-    numerator = sum(3 ** d * 2 ** alpha for d, alpha in enumerate(a[::-1]))
-    yellow(f"Numerator\t{numerator}")
-    numerator_factors = factorint(n=numerator)
-    red(f"Numerator factors\t{numerator_factors}")
-
     denominator = 2 ** n - 3 ** k
-    yellow(f"Denominator\t{denominator}")
     denominator_factors = factorint(n=denominator)
-    red(f"Denominator factors\t{denominator_factors}")
+    red(f"Denominator\t{denominator}\t{denominator_factors}")
 
-    ratio = numerator / denominator
-    green(f"Ratio\t{ratio}")
+    for i in range(n):
+        numerator = build_numerator(s=s[i:]+s[:i])
+    numerator = build_numerator(s=s)
+
+    green(f"Ratio\t{numerator / denominator}")
     green(f"Ratio\t{(Rational(numerator, denominator))}")
