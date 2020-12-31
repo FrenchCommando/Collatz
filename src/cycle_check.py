@@ -17,8 +17,9 @@ def build_numerator(s):
     # magenta(f"alpha\t{a}")
     numerator = sum(3 ** d * 2 ** alpha for d, alpha in enumerate(a[::-1]))
     numerator_factors = factorint(n=numerator)
-    magenta(text=s, end="     ")
-    yellow(text=f"Numerator\t{numerator}\t{numerator_factors}")
+    if 2 not in numerator_factors:
+        magenta(text=s, end="     ")
+        yellow(text=f"Numerator\t{numerator}\t{numerator_factors}")
     return numerator
 
 
