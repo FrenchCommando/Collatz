@@ -21,7 +21,7 @@ def build_numerator(s, denominator=1):
     if 2 not in numerator_factors:
         magenta(text=s, end="     ")
         yellow(text=f"Numerator\t{numerator}", end="     ")
-        cyan(text=f"{numerator / denominator:.1f}", end="     ")
+        cyan(text=f"{numerator / denominator:.5f}", end="     ")
         yellow(text=f"{numerator_factors_string}", end="     ")
         print()
     return numerator
