@@ -14,6 +14,7 @@ from sympy.core import Rational
 
 def build_numerator(s, denominator=1):
     k = len(s)
+    denominator_factors = factorint(n=denominator)
 
     def build_internal(s_int):
         numerator = 0
@@ -24,10 +25,13 @@ def build_numerator(s, denominator=1):
         numerator_factors = factorint(n=numerator)
         numerator_factors_string = " ".join([f"{kkk}   " * kk
                                              for kkk, kk in reversed(numerator_factors.items())])
-        magenta(text=s_int, end="     ")
-        yellow(text=f"Numerator\t{numerator}", end="     ")
-        cyan(text=f"{numerator / denominator:.5f}", end="     ")
-        yellow(text=f"{numerator_factors_string}", end="     ")
+        denominator_modulo = "\t".join([f"{numerator % factor}" for factor in denominator_factors])
+
+        magenta(text=s_int, end="\t")
+        yellow(text=f"{numerator}", end=" \t")
+        cyan(text=f"{numerator / denominator:.5f}", end="  \t")
+        magenta(text=denominator_modulo, end="      \t")
+        yellow(text=f"{numerator_factors_string}", end="    \t")
         print()
         return numerator
 
