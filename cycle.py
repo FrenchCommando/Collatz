@@ -2,7 +2,11 @@ import argparse
 from src.cycle_check import check
 
 
-n_value = ['2', '1', '2', '2', '1', '1', '1', '4', '1', '2', '1', '2', '2', '1', '1', '5', '4', '1', '2', '1']
+n_value = [
+    '2', '1', '2', '2', '1', '1', '1', '4',
+    '1', '1', '1', '1',
+    '3', '5',
+]
 
 parser = argparse.ArgumentParser()
 parser.add_argument('number', help='starting number', default=n_value, nargs='*')
